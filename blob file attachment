@@ -1,0 +1,18 @@
+$storageAccountName = 'Storage Account Name'
+$storageAccountKey = 'Storage Account Key'
+$storageAccountContainer = "Container Name"
+$FileName = "File name"
+
+$From = "user's email sending the file"
+$to = "user email receiving the file"
+$subject ="the subject of email"
+$body = "body of the email"
+$attachment = "local path of the file"
+$smptpServer ="name of the smtp server being utilized"
+$port = "port of the said smtp server"
+
+
+$storageAccountContext = New-AzStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $storageAccountKey
+Get-AzStorageBlobContent -Context $storageAccountContext -Container $storageAccountContainer -Blob $FileName -Destination "D:\TestData\"
+
+Send-MailMessage -From $From -To $to -Subject $subject -Body $body -Attachments $attachment -DeliveryNotificationOption OnSuccess, OnFailure -SmtpServer $smptpServer -Port $port -UseSsl -Credential (Get-Credential)
